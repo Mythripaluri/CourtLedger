@@ -7,7 +7,9 @@ load_dotenv()
 class Settings:
     def __init__(self):
         # Database
-        self.database_url = os.getenv("DATABASE_URL", "sqlite:///./court_tracker.db")
+        # Use absolute path for database to avoid path issues
+        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "court_tracker.db")
+        self.database_url = os.getenv("DATABASE_URL", f"sqlite:///{db_path}")
         
         # Google APIs
         self.google_client_id = os.getenv("GOOGLE_CLIENT_ID")

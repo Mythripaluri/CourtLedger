@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000');
 
 // Create axios instance
@@ -54,20 +54,24 @@ export interface ApiResponse<T = any> {
   status: number;
 }
 
+export interface CaseDetails {
+  parties?: string | null;
+  filing_date?: string | null;
+  next_hearing_date?: string | null;
+  case_status?: string | null;
+  judgment_url?: string | null;
+}
+
 export interface CaseQuery {
   id: number;
-  case_number: string;
-  court_name: string;
-  case_title: string;
   case_type: string;
-  filing_date: string;
-  next_hearing_date: string | null;
-  case_status: string;
-  petitioner: string;
-  respondent: string;
-  judge_name: string | null;
+  case_number: string;
+  year: string;
+  court_type: string;
+  details: CaseDetails;
+  success: boolean;
+  error_message?: string | null;
   created_at: string;
-  updated_at: string;
 }
 
 export interface CauseListEntry {
@@ -116,16 +120,18 @@ export interface FileSummary {
 export const courtApi = {
   // Get case details by case number
   async getCaseDetails(caseNumber: string): Promise<CaseQuery> {
-    const response = await apiClient.get<CaseQuery>(`/api/court/query/${caseNumber}`);
+    const response = await apiClient.get<CaseQuery>(`/api/court/case/${caseNumber}`);
     return response.data;
   },
 
   // Submit a new case query
   async submitCaseQuery(data: {
+    case_type: string;
     case_number: string;
-    court_name: string;
+    year: string;
+    court_type: string;
   }): Promise<CaseQuery> {
-    const response = await apiClient.post<CaseQuery>('/api/court/query', data);
+    const response = await apiClient.post<CaseQuery>('/api/court/fetch-case', data);
     return response.data;
   },
 

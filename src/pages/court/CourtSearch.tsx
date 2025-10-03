@@ -33,34 +33,22 @@ const CourtSearch = () => {
     setError(null);
     
     try {
-      // Construct case number in the format expected by backend
-      const fullCaseNumber = `${formData.caseType} ${formData.caseNumber}/${formData.year}`;
+      // Submit case query directly to our backend API
+      const courtType = formData.courtName.toLowerCase().includes("high") ? "high_court" : "district_court";
       
-      // First try to get existing case details
-      try {
-        const existingCase = await courtApi.getCaseDetails(fullCaseNumber);
-        setCaseDetails(existingCase);
-        
-        toast({
-          title: "Case Found",
-          description: "Case details retrieved successfully from database.",
-        });
-      } catch (getCaseError) {
-        // If case doesn't exist, submit a new query to scrape it
-        console.log("Case not found in database, submitting new query...");
-        
-        const newCase = await courtApi.submitCaseQuery({
-          case_number: fullCaseNumber,
-          court_name: formData.courtName,
-        });
-        
-        setCaseDetails(newCase);
-        
-        toast({
-          title: "Case Query Submitted",
-          description: "New case query has been submitted. Details will be updated when available.",
-        });
-      }
+      const newCase = await courtApi.submitCaseQuery({
+        case_type: formData.caseType,
+        case_number: formData.caseNumber,
+        year: formData.year,
+        court_type: courtType,
+      });
+      
+      setCaseDetails(newCase);
+      
+      toast({
+        title: "Case Found",
+        description: "Case details retrieved successfully!",
+      });
       
       // Save to recent searches
       const recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
@@ -232,29 +220,14 @@ const CourtSearch = () => {
                 Case Details
               </CardTitle>
               <CardDescription>
-                {caseDetails.case_number} - {caseDetails.court_name}
+                {caseDetails.case_type} {caseDetails.case_number}/{caseDetails.year} - {caseDetails.court_type === 'high_court' ? 'High Court' : 'District Court'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Case Title</Label>
-                  <p className="font-semibold">{caseDetails.case_title || 'Not available'}</p>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Case Type</Label>
-                  <p className="font-semibold">{caseDetails.case_type || 'Not available'}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Petitioner</Label>
-                  <p className="font-semibold">{caseDetails.petitioner || 'Not available'}</p>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Respondent</Label>
-                  <p className="font-semibold">{caseDetails.respondent || 'Not available'}</p>
+                  <Label className="text-sm font-medium text-muted-foreground">Parties</Label>
+                  <p className="font-semibold">{caseDetails.details.parties || 'Not available'}</p>
                 </div>
               </div>
 
@@ -264,7 +237,7 @@ const CourtSearch = () => {
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Filing Date</Label>
                     <p className="font-semibold">
-                      {caseDetails.filing_date ? new Date(caseDetails.filing_date).toLocaleDateString() : 'Not available'}
+                      {caseDetails.details.filing_date ? new Date(caseDetails.details.filing_date).toLocaleDateString() : 'Not available'}
                     </p>
                   </div>
                 </div>
@@ -273,7 +246,7 @@ const CourtSearch = () => {
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Next Hearing</Label>
                     <p className="font-semibold text-warning">
-                      {caseDetails.next_hearing_date ? new Date(caseDetails.next_hearing_date).toLocaleDateString() : 'Not scheduled'}
+                      {caseDetails.details.next_hearing_date ? new Date(caseDetails.details.next_hearing_date).toLocaleDateString() : 'Not scheduled'}
                     </p>
                   </div>
                 </div>
@@ -284,16 +257,10 @@ const CourtSearch = () => {
                   <Gavel className="h-4 w-4 text-muted-foreground" />
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Status</Label>
-                    <p className="font-semibold text-warning">{caseDetails.case_status || 'Not available'}</p>
+                    <p className="font-semibold text-warning">{caseDetails.details.case_status || 'Not available'}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">Judge</Label>
-                    <p className="font-semibold">{caseDetails.judge_name || 'Not assigned'}</p>
-                  </div>
-                </div>
+
               </div>
 
               <div className="pt-4 space-y-2">

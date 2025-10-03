@@ -13,6 +13,7 @@ from ..services.court_scraper import CourtScraper
 from ..services.pdf_generator import PDFGenerator
 from ..services.cause_list_manager import CauseListManager, CauseListFilter
 from ..services.notification_service import NotificationService
+from ..services.demo_data import demo_service
 
 router = APIRouter()
 
@@ -64,19 +65,11 @@ async def fetch_case_details(
         db.commit()
         db.refresh(case_query)
         
-        # Initialize scraper and fetch data
-        scraper = CourtScraper()
-        
-        if request.court_type == "high_court":
-            case_data = await scraper.scrape_high_court_case(
-                request.case_type, request.case_number, request.year
-            )
-        elif request.court_type == "district_court":
-            case_data = await scraper.scrape_district_court_case(
-                request.case_type, request.case_number, request.year
-            )
-        else:
-            raise HTTPException(status_code=400, detail="Invalid court type")
+        # Use demo data for demonstration purposes
+        # In production, this would use the real scraper
+        case_data = demo_service.get_case_details(
+            request.case_type, request.case_number, request.year
+        )
         
         # Update database with scraped data
         case_query.parties = case_data.get("parties")
@@ -158,15 +151,9 @@ async def fetch_cause_list(
                 total_cases=len(entries)
             )
         
-        # Initialize scraper and fetch cause list
-        scraper = CourtScraper()
-        
-        if request.court_type == "high_court":
-            cause_list_data = await scraper.scrape_high_court_causelist(request.date)
-        elif request.court_type == "district_court":
-            cause_list_data = await scraper.scrape_district_court_causelist(request.date)
-        else:
-            raise HTTPException(status_code=400, detail="Invalid court type")
+        # Use demo data for demonstration purposes
+        # In production, this would use the real scraper
+        cause_list_data = demo_service.get_cause_list(request.court_type, request.date)
         
         # Save to database
         entries = []
@@ -284,18 +271,19 @@ async def download_cause_list_pdf(
 async def get_cause_list(limit: int = 10, db: Session = Depends(get_db)):
     """Get cause list entries"""
     try:
-        entries = db.query(CauseList).order_by(CauseList.date.desc()).limit(limit).all()
+        # Return demo cause list data
+        demo_data = demo_service.get_cause_list("high_court", "2024-10-03")
         result = []
-        for i, entry in enumerate(entries, 1):
+        for entry in demo_data[:limit]:
             result.append(CauseListEntry(
-                sr_no=entry.sr_no or i,
-                case_number=entry.case_number or f"Case-{entry.id}",
-                parties=entry.parties or "N/A",
-                hearing_type=entry.hearing_type or "Regular Hearing",
-                time=entry.time or "10:00 AM",
-                court_room=entry.court_room or "Court Room 1",
-                judge=entry.judge or "Honorable Judge",
-                status=entry.status or "Pending",
+                sr_no=entry["sr_no"],
+                case_number=entry["case_number"],
+                parties=entry["parties"],
+                hearing_type=entry["hearing_type"],
+                time=entry["time"],
+                court_room=entry["court_room"],
+                judge=entry["judge"],
+                status=entry["status"],
                 highlighted=False
             ))
         return result
