@@ -1,13 +1,21 @@
-# Court-Data Fetcher & Judgement Downloader
+# CourtLedger - Court Case Tracker & Judgment Downloader
 
 ![Indian Courts](https://img.shields.io/badge/Indian-Courts-orange)
 ![eCourts](https://img.shields.io/badge/eCourts-Integration-green)
-![Web Scraping](https://img.shields.io/badge/Web-Scraping-blue)
-![PDF Download](https://img.shields.io/badge/PDF-Download-red)
+![React](https://img.shields.io/badge/React-18-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-blue)
 
-## 🎯 Project Objective
+## 🎯 Project Overview
 
-A comprehensive web application that allows users to enter Case Type, Case Number, and Year for Indian courts, fetches case details, downloads judgments/orders, and provides cause list functionality for daily case listings.
+**CourtLedger** is a comprehensive web application designed for Indian legal professionals, lawyers, and citizens to efficiently track court cases, download judgments, and access daily cause lists. The application integrates with eCourts portals and provides a modern, user-friendly interface for case management.
+
+### 🔥 Key Capabilities
+- **Case Search**: Enter Case Type, Case Number, and Year to fetch detailed case information
+- **Judgment Downloads**: Direct PDF downloads of court orders and judgments  
+- **Cause List Access**: Daily court schedules with case listings and hearing times
+- **Multi-Court Support**: High Courts and District Courts across India
+- **Historical Tracking**: Complete audit trail of searches and results
 
 ## ✅ Features Implemented
 
@@ -48,6 +56,165 @@ A comprehensive web application that allows users to enter Case Type, Case Numbe
 - ✅ **PDF Generation** - Downloadable cause list PDFs
 - ✅ **Case Highlighting** - Highlight specific cases in cause lists
 - ✅ **Court-wise Filtering** - Separate cause lists for different courts
+
+## 🚀 Setup & Installation Guide
+
+### **Prerequisites**
+- **Python 3.8+** (Python 3.11 recommended)
+- **Node.js 18+** with npm
+- **Git** for version control
+
+### **📦 Installation Steps**
+
+#### **1. Clone Repository**
+```bash
+git clone https://github.com/Mythripaluri/CourtLedger.git
+cd CourtLedger
+```
+
+#### **2. Frontend Setup**  
+```bash
+npm install
+```
+
+#### **3. Backend Dependencies**
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+### **⚡ Quick Start (Two Options)**
+
+#### **Option A: Demo Mode with Mock Data (Recommended)**
+```bash
+# Terminal 1: Start Test Server with Demo Data
+python test_server.py
+
+# Terminal 2: Start Frontend
+npm run dev
+```
+
+#### **Option B: Full Production Server**
+```bash
+# Terminal 1: Start Full Backend
+cd backend
+python main.py
+
+# Terminal 2: Start Frontend  
+npm run dev
+```
+
+**🌐 Access URLs:**
+- **Frontend**: `http://localhost:8081` (or `http://localhost:5173`)
+- **Backend API**: `http://localhost:8000`
+- **API Docs**: `http://localhost:8000/docs`
+
+## 🧪 Demo Data & Testing
+
+### **🎭 Mock Data Overview**
+The application includes comprehensive demo data for testing without requiring real court API access:
+
+#### **📋 Available Demo Cases**
+
+| Case Type | Case Number | Year | Court Type | Expected Result |
+|-----------|-------------|------|------------|-----------------|
+| **WP** | 5678 | 2023 | High Court | "Rajesh Kumar vs State of Delhi & Others" |
+| **PIL** | 1234 | 2024 | High Court | "Citizens Welfare Association vs Municipal Corporation" |
+| **CWP** | 9876 | 2024 | High Court | "Tech Solutions Pvt Ltd vs Income Tax Department" |
+| **CC** | 456 | 2024 | District Court | "State vs Amit Sharma" |
+| **CS** | 789 | 2023 | District Court | "ABC Trading Co vs XYZ Enterprises" |
+
+#### **📅 Demo Cause Lists**
+
+**High Court (Delhi High Court):**
+- 3 sample cases with complete details (judges, courtrooms, timings)
+- Cases include WP, PIL, and CWP with realistic hearing schedules
+
+**District Court (Tis Hazari):**
+- 2 sample cases covering criminal and civil matters
+- Complete case details with judge assignments and courtroom info
+
+### **🧪 Testing Instructions**
+
+1. **Case Search Testing:**
+   - Go to `http://localhost:8081/court`
+   - Enter any of the demo cases from the table above
+   - View detailed case information with parties, dates, and status
+
+2. **Cause List Testing:**
+   - Navigate to `http://localhost:8081/court/cause-list`
+   - Select "High Court of Delhi" or "District Court"
+   - Choose any date to view demo cause list
+
+3. **Error Handling Testing:**
+   - Enter invalid case details (e.g., WP 9999/2020)
+   - Observe user-friendly error messages
+
+## 🔐 Configuration & Credentials
+
+### **Environment Variables**
+
+Create a `.env` file in the backend directory:
+
+```env
+# Database Configuration
+DATABASE_URL=sqlite:///./court_tracker.db
+
+# Security
+SECRET_KEY=your-secret-key-here
+
+# Google Drive Integration (Optional)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/api/integrations/google/callback
+
+# AI Services (Optional)
+OPENAI_API_KEY=your-openai-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key  
+AI_ENABLED=true
+
+# WhatsApp Integration (Optional)
+TWILIO_ACCOUNT_SID=your-twilio-account-sid
+TWILIO_AUTH_TOKEN=your-twilio-auth-token
+TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
+
+# N8N Workflow (Optional)
+N8N_WEBHOOK_URL=your-n8n-webhook-url
+
+# Court Scraping Settings
+SELENIUM_HEADLESS=true
+SCRAPING_TIMEOUT=30
+```
+
+### **🔑 Credentials Setup**
+
+#### **Required for Demo Mode:**
+- **None** - Demo mode works without any credentials
+
+#### **Required for Production Mode:**
+1. **Database**: SQLite (included) or PostgreSQL URL
+2. **Court API Access**: Some courts may require registration
+
+#### **Optional Integrations:**
+1. **Google Drive**: For document storage
+   - Get credentials from [Google Cloud Console](https://console.cloud.google.com)
+   
+2. **AI Services**: For document analysis  
+   - OpenAI API key for GPT integration
+   - Anthropic API key for Claude integration
+
+3. **WhatsApp Integration**: For notifications
+   - Twilio Account SID and Auth Token
+   - WhatsApp Business API access
+
+4. **N8N Workflows**: For automation
+   - N8N instance webhook URL
+
+### **🛡️ Security Notes**
+- Keep all API keys secure and never commit them to version control
+- Use environment variables for all sensitive configuration
+- The `.env.example` file shows required format without sensitive data
+- Database is SQLite by default (file-based, no additional setup required)
 
 ## 🏗️ Architecture
 
@@ -102,18 +269,137 @@ Frontend runs on: `http://localhost:5173`
 ## 🔧 API Endpoints
 
 ### **Case Management**
-- `POST /api/court/fetch-case` - Fetch case details
-- `GET /api/court/recent-searches` - Get recent searches
-- `GET /api/court/download-judgment` - Download judgment PDF
+- `POST /api/court/fetch-case` - Fetch case details from court portals
+- `GET /api/court/recent-searches` - Retrieve recent search history
+- `GET /api/court/download-judgment` - Download judgment/order PDFs
 
-### **Cause List Management**
-- `POST /api/court/fetch-causelist` - Fetch daily cause list
-- `GET /api/court/download-causelist` - Download cause list PDF
-- `GET /api/court/cause-list` - Get stored cause list entries
+### **Cause List Management**  
+- `GET /api/court/cause-list` - Get daily cause list entries
+- `POST /api/court/fetch-causelist` - Fetch fresh cause list from court
+- `GET /api/court/download-causelist` - Download cause list as PDF
 
-### **Health Checks**
-- `GET /health` - API health status
-- `GET /api/health` - Detailed health check
+### **Health & Monitoring**
+- `GET /health` - Basic API health status
+- `GET /api/health` - Detailed health check with database status
+
+### **Integration APIs**
+- `POST /api/whatsapp/send` - Send WhatsApp notifications
+- `GET /api/drive/files` - List Google Drive files
+- `POST /api/integrations/google/auth` - Google OAuth authentication
+
+## 🐛 Troubleshooting Guide
+
+### **Common Issues & Solutions**
+
+#### **1. CORS Errors**
+```
+Error: Access blocked by CORS policy
+```
+**Solution**: Ensure frontend runs on allowed origin (localhost:8081 or localhost:5173)
+
+#### **2. Backend Server Won't Start**
+```
+Error: Address already in use
+```
+**Solutions**:
+- Check if port 8000 is in use: `netstat -ano | findstr :8000`
+- Kill existing process or change port in server configuration
+- Use the test server: `python test_server.py` instead of `python main.py`
+
+#### **3. Frontend Build Errors**
+```
+Error: Cannot resolve module
+```
+**Solutions**:
+- Delete `node_modules` and run `npm install` again
+- Clear npm cache: `npm cache clean --force`
+- Ensure Node.js version is 18+
+
+#### **4. Database Connection Issues**
+```
+Error: Could not connect to database
+```
+**Solutions**:
+- Check if `court_tracker.db` exists in backend directory
+- Verify DATABASE_URL in .env file
+- For SQLite, ensure write permissions in directory
+
+#### **5. Case Search Returns "Not Found"**
+**For Demo Mode**: Use exact demo cases from the table above
+**For Production**: Verify court portal connectivity and case format
+
+### **🔧 Development Tips**
+
+#### **Hot Reloading Issues**
+- Frontend: Save files to trigger Vite hot reload
+- Backend: Use `--reload` flag with uvicorn for auto-restart
+
+#### **Port Conflicts**
+- Frontend will auto-select next available port (8081, 8082, etc.)
+- Backend defaults to 8000, modify in server files if needed
+
+#### **Database Reset**
+```bash
+# Delete existing database
+rm backend/court_tracker.db
+
+# Restart server to recreate tables
+python test_server.py
+```
+
+## 🚀 Deployment Options
+
+### **Local Development**
+```bash
+# Development with hot reload
+npm run dev              # Frontend
+python test_server.py    # Backend (demo mode)
+```
+
+### **Production Build**
+```bash
+# Build frontend for production
+npm run build
+
+# Serve built files
+npm run preview
+
+# Production backend
+cd backend
+python main.py
+```
+
+### **Docker Deployment** (Optional)
+```dockerfile
+# Dockerfile example for containerization
+FROM node:18-alpine AS frontend
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM python:3.11-slim
+WORKDIR /app
+COPY backend/requirements.txt .
+RUN pip install -r requirements.txt
+COPY backend/ .
+COPY --from=frontend /app/dist ./static
+CMD ["python", "main.py"]
+```
+
+### **Vercel Deployment** (Frontend Only)
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy frontend
+vercel --prod
+```
+
+**Environment Variables for Vercel:**
+- `VITE_API_BASE_URL=https://your-backend-api.com`
+- Backend needs separate deployment (Railway, Heroku, etc.)
 
 ## 🛡️ Error Handling
 
@@ -453,24 +739,98 @@ For issues and questions:└── README.md
 
 - Check the documentation in the `/docs` folder
 
-- Review the API documentation at `/api/docs` when runningPerfect for demonstrating web scraping, data processing, and legal tech integration skills! 🚀
+- Review the API documentation at `/api/docs` when running## 📁 Project Structure
 
-
-## Deployment
-
-### Production Build
-```bash
-npm run build
+```
+CourtLedger/
+├── 📂 src/                          # Frontend React application
+│   ├── 📂 components/               # Reusable UI components
+│   │   ├── Navigation.tsx           # App navigation
+│   │   └── 📂 ui/                   # shadcn/ui components
+│   ├── 📂 pages/                    # Page components
+│   │   ├── Home.tsx                 # Landing page
+│   │   └── 📂 court/                # Court-related pages
+│   │       ├── CourtSearch.tsx      # Case search interface
+│   │       └── CauseList.tsx        # Cause list viewer
+│   ├── 📂 lib/                      # Utilities and API client
+│   │   ├── api.ts                   # Axios API client
+│   │   └── utils.ts                 # Helper functions
+│   └── 📂 hooks/                    # Custom React hooks
+├── 📂 backend/                      # FastAPI backend server
+│   ├── 📂 app/                      # Application core
+│   │   ├── 📂 routers/              # API route handlers
+│   │   │   ├── court.py             # Court case endpoints
+│   │   │   ├── drive.py             # Google Drive integration
+│   │   │   └── whatsapp.py          # WhatsApp integration
+│   │   ├── 📂 services/             # Business logic
+│   │   │   ├── court_scraper.py     # Web scraping logic
+│   │   │   ├── demo_data.py         # Mock data service
+│   │   │   └── pdf_generator.py     # PDF generation
+│   │   ├── database.py              # SQLAlchemy models
+│   │   ├── config.py                # Configuration management
+│   │   └── schemas.py               # Pydantic schemas
+│   ├── main.py                      # Production server entry
+│   ├── requirements.txt             # Python dependencies
+│   └── 📂 static/                   # Static files (PDFs, etc.)
+├── test_server.py                   # Demo server with mock data
+├── package.json                     # Node.js dependencies
+├── vite.config.ts                   # Vite configuration
+├── tailwind.config.ts               # Tailwind CSS config
+└── 📄 README.md                     # This file
 ```
 
-### Docker Deployment
-```bash
-docker build -t court-data-fetcher .
-docker run -p 8080:8080 court-data-fetcher
-```
+## 🤝 Contributing
 
-## Acknowledgments
+We welcome contributions to CourtLedger! Here's how you can help:
 
-- Indian Judiciary for providing public access to court data
-- eCourts portal for case information
-- Open source community for excellent libraries and tools
+### **🔀 Getting Started**
+1. **Fork** the repository on GitHub
+2. **Clone** your fork locally
+3. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+4. **Make** your changes and test thoroughly
+5. **Commit** with clear messages: `git commit -m 'Add amazing feature'`
+6. **Push** to your fork: `git push origin feature/amazing-feature`
+7. **Submit** a Pull Request with detailed description
+
+### **🐛 Reporting Issues**
+- Use GitHub Issues for bug reports
+- Include steps to reproduce the issue
+- Provide system information (OS, Python/Node versions)
+- Screenshots for UI issues
+
+### **💡 Feature Requests**
+- Check existing issues before creating new ones
+- Clearly describe the proposed feature
+- Explain the use case and benefits
+
+### **🧪 Development Guidelines**
+- Write tests for new features
+- Follow existing code style and conventions
+- Update documentation for API changes
+- Ensure both demo and production modes work
+
+## 📜 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Indian Judiciary** for providing public access to court data
+- **eCourts Portal** for digital case information systems
+- **React & FastAPI Communities** for excellent frameworks
+- **shadcn/ui** for beautiful, accessible UI components
+- **Tailwind CSS** for utility-first styling
+- **Open Source Community** for libraries and inspiration
+
+## 📞 Support & Contact
+
+- **GitHub Issues**: [Report bugs and request features](https://github.com/Mythripaluri/CourtLedger/issues)
+- **Discussions**: [Community discussions and Q&A](https://github.com/Mythripaluri/CourtLedger/discussions)
+- **Documentation**: API docs available at `/docs` when server is running
+- **Email**: For private inquiries (check GitHub profile)
+
+---
+
+**🎯 Perfect for demonstrating:** Web scraping, legal tech integration, modern full-stack development, API design, and real-world problem solving! 🚀
+
+### **⭐ If this project helps you, please give it a star on GitHub!**
