@@ -9,13 +9,28 @@ const Home = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="bg-gradient-hero p-8 rounded-2xl shadow-legal mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4">
-              Court Case & Google Drive Assistant
-            </h1>
-            <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
-              Professional legal management system for tracking court cases and managing documents efficiently
-            </p>
+          <div className="bg-gradient-hero p-8 rounded-2xl shadow-legal mb-8 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-600/10"></div>
+            <div className="relative z-10">
+              <div className="flex justify-center mb-6">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-2xl">
+                  <img 
+                    src="/logo.png" 
+                    alt="CourtLedger Logo" 
+                    className="h-16 w-16 object-contain filter brightness-0 invert"
+                  />
+                </div>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4">
+                CourtLedger
+              </h1>
+              <p className="text-2xl text-primary-foreground/80 mb-2">
+                Infinite Legal Solutions
+              </p>
+              <p className="text-lg text-primary-foreground/70 max-w-2xl mx-auto">
+                Professional legal management system for tracking court cases and managing documents efficiently
+              </p>
+            </div>
           </div>
         </div>
 

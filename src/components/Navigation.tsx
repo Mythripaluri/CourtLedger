@@ -23,15 +23,19 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo & Title */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="bg-legal-gold p-2 rounded-lg">
-              <Scale className="h-6 w-6 text-legal-gold-foreground" />
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-1 rounded-lg">
+              <img 
+                src="/logo.png" 
+                alt="CourtLedger Logo" 
+                className="h-8 w-8 object-contain filter brightness-0 invert"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-primary-foreground">
-                Court Case & Drive Assistant
+                CourtLedger
               </h1>
               <p className="text-xs text-primary-foreground/70 hidden sm:block">
-                Professional Legal Management System
+                Infinite Legal Solutions
               </p>
             </div>
           </Link>
